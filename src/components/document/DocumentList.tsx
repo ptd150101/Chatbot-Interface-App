@@ -8,7 +8,7 @@ import { File, FileText, MoreVertical, Search } from "lucide-react";
 interface Document {
   id: string;
   name: string;
-  type: "pdf" | "docx" | "md" | "txt";
+  type: "pdf" | "docx" | "md" | "txt" | "image";
   size: string;
   lastModified: string;
 }

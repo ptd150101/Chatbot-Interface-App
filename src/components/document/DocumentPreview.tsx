@@ -15,7 +15,7 @@ interface DocumentPreviewProps {
   document?: {
     id: string;
     name: string;
-    type: "pdf" | "docx" | "md" | "txt";
+    type: "pdf" | "docx" | "md" | "txt" | "image";
     url: string;
     content?: string;
   };

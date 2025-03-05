@@ -17,33 +17,7 @@ type MessageListProps = {
   className?: string;
 };
 
-const MessageList = ({
-  messages = [
-    {
-      id: "1",
-      content: "Hello! How can I help you today?",
-      sender: "ai",
-      timestamp: new Date(),
-      model: "GPT-4",
-    },
-    {
-      id: "2",
-      content:
-        "I need help with document management. Can you show me how to upload and preview files?",
-      sender: "user",
-      timestamp: new Date(Date.now() - 60000),
-    },
-    {
-      id: "3",
-      content:
-        "Of course! To upload documents, click the upload button in the document panel on the right side. You can then preview PDFs, DOCX, Markdown, and TXT files directly in the application. Would you like me to explain more about specific file types?",
-      sender: "ai",
-      timestamp: new Date(Date.now() - 30000),
-      model: "GPT-4",
-    },
-  ],
-  className,
-}: MessageListProps) => {
+const MessageList = ({ messages = [], className }: MessageListProps) => {
   return (
     <div className={cn("w-full h-full bg-background flex flex-col", className)}>
       <ScrollArea className="flex-1 p-4">

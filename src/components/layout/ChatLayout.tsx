@@ -6,11 +6,30 @@ import ThemeToggle from "../theme/ThemeToggle";
 import { Button } from "../ui/button";
 import { ChevronLeft, ChevronRight, FileText } from "lucide-react";
 
+interface Message {
+  id: string;
+  content: string;
+  sender: "user" | "ai";
+  timestamp: Date;
+  model?: "GPT-4" | "Claude" | "Gemini";
+}
+
+interface Document {
+  id: string;
+  name: string;
+  type: "pdf" | "docx" | "md" | "txt" | "image";
+  dateModified: string;
+  size: string;
+  url?: string;
+  content?: string;
+}
+
 const ChatLayout = () => {
   // State for managing the UI layout
   const [isThreadSidebarCollapsed, setIsThreadSidebarCollapsed] =
     useState(false);
   const [isDocumentPanelOpen, setIsDocumentPanelOpen] = useState(false);
+  const [messages, setMessages] = useState<Message[]>([]);
 
   // Mock data for threads
   const threads = [
@@ -39,35 +58,8 @@ const ChatLayout = () => {
       isActive: false,
     },
   ];
-
-  // Mock messages for the chat area
-  const messages = [
-    {
-      id: "1",
-      content: "Hello! How can I help you today?",
-      sender: "ai",
-      timestamp: new Date(),
-      model: "GPT-4",
-    },
-    {
-      id: "2",
-      content:
-        "I need help with document management. Can you show me how to upload and preview files?",
-      sender: "user",
-      timestamp: new Date(Date.now() - 60000),
-    },
-    {
-      id: "3",
-      content:
-        "Of course! To upload documents, click the upload button in the document panel on the right side. You can then preview PDFs, DOCX, Markdown, and TXT files directly in the application. Would you like me to explain more about specific file types?",
-      sender: "ai",
-      timestamp: new Date(Date.now() - 30000),
-      model: "GPT-4",
-    },
-  ];
-
   // Mock documents for the document panel
-  const documents = [
+  const documents: Document[] = [
     {
       id: "1",
       name: "Project Proposal.pdf",
@@ -93,26 +85,61 @@ const ChatLayout = () => {
         "# Project Documentation\n\nThis is a sample markdown file with documentation for the project.\n\n## Features\n\n- Multi-modal chat interface\n- Document management\n- Thread organization",
     },
   ];
-
   // Event handlers
   const handleToggleThreadSidebar = () => {
     setIsThreadSidebarCollapsed(!isThreadSidebarCollapsed);
   };
-
   const handleToggleDocumentPanel = () => {
     setIsDocumentPanelOpen(!isDocumentPanelOpen);
   };
-
   const handleSelectThread = (threadId: string) => {
     console.log(`Thread selected: ${threadId}`);
     // In a real app, you would load the selected thread's messages here
+    // Example:
+    // fetchThreadMessages(threadId).then(messages => setMessages(messages));
   };
+  const handleSendMessage = async (message: string) => {
+    try {
+      // Create a new user message
+      const userMessage: Message = {
+        id: `user-${Date.now()}`,
+        content: message,
+        sender: "user",
+        timestamp: new Date(),
+      };
 
-  const handleSendMessage = (message: string) => {
-    console.log(`Message sent: ${message}`);
-    // In a real app, you would send the message to the backend here
+      // Add user message to the state
+      setMessages(prev => [...prev, userMessage]);
+
+      // In a real app, you would send the message to the backend here
+      // Example:
+      // const response = await sendMessageToBackend(message);
+      // const aiMessage = {
+      //   id: response.id,
+      //   content: response.content,
+      //   sender: "ai",
+      //   timestamp: new Date(),
+      //   model: response.model
+      // };
+      // setMessages(prev => [...prev, aiMessage]);
+
+      // For now, simulate AI response
+      setTimeout(() => {
+        const aiMessage: Message = {
+          id: `ai-${Date.now()}`,
+          content: `I received your message: "${message}". This is a simulated response.`,
+          sender: "ai",
+          timestamp: new Date(),
+          model: "GPT-4"
+        };
+        setMessages(prev => [...prev, aiMessage]);
+      }, 1000);
+
+    } catch (error) {
+      console.error('Error sending message:', error);
+      // Handle error appropriately
+    }
   };
-
   return (
     <div className="flex h-screen w-full bg-background overflow-hidden">
       {/* Thread Sidebar */}

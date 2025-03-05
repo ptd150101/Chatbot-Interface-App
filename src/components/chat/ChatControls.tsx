@@ -21,6 +21,7 @@ interface ChatControlsProps {
   onModelChange?: (model: string) => void;
   isRecording?: boolean;
   selectedModel?: string;
+  disabled?: boolean;
 }
 
 const ChatControls: React.FC<ChatControlsProps> = ({
